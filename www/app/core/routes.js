@@ -14,7 +14,7 @@
 	        	})
 
 	        	.state('signup', {
-	        		url: '/signup/:pId',
+	        		url: '/signup',
 	        		templateUrl: 'app/auth/signup/signup.html',
 	        		controller: 'SignupCtrl',
 	        	})
