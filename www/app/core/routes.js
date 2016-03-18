@@ -24,6 +24,6 @@
 	        		templateUrl: 'app/auth/login/passwordResetForm.html',
 	        		controller: 'PasswordResetCtrl',
 	        	});
-	        $urlRouterProvider.otherwise('dashboard');
+	        $urlRouterProvider.otherwise('login');
     }]);
 })();
