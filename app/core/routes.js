@@ -3,6 +3,12 @@
 
   angular
     .module('app.core')
+    .service('rootRef', ['FBURL', Firebase])
+    .factory("Auth", ["$firebaseAuth", 'rootRef',
+		  function($firebaseAuth, rootRef) {
+		    return $firebaseAuth(rootRef);
+		  }
+		])
     .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider',
         function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
@@ -23,7 +29,45 @@
 	        		url: '/passwordResetForm',
 	        		templateUrl: 'app/auth/login/passwordResetForm.html',
 	        		controller: 'PasswordResetCtrl',
-	        	});
-	        $urlRouterProvider.otherwise('login');
+	        	})
+
+            .state('profile', {
+	        		url: '/profile',
+	        		templateUrl: 'app/auth/profile/profile.html',
+	        		controller: 'ProfileCtrl',
+	        		resolve: {
+	        			'currentAuth': ['Auth', function(Auth){
+	        				return Auth.$requireAuth();
+	        			}]
+	        		},
+	        	})
+
+            .state('changeEmail', {
+	        		url: '/changeEmail',
+	        		templateUrl: 'app/auth/profile/changeEmail.html',
+	        		controller: 'ProfileCtrl',
+	        		resolve: {
+	        			'currentAuth': ['Auth', function(Auth){
+	        				return Auth.$requireAuth();
+	        			}]
+	        		},
+	        	})
+
+            .state('changePassword', {
+	        		url: '/changePassword',
+	        		templateUrl: 'app/auth/profile/changePassword.html',
+	        		controller: 'ProfileCtrl',
+	        		resolve: {
+	        			'currentAuth': ['Auth', function(Auth){
+	        				return Auth.$requireAuth();
+	        			}]
+	        		},
+	        	})
+
+
+
+
+            ;
+	        $urlRouterProvider.otherwise('profile');
     }]);
 })();

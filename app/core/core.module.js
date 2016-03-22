@@ -5,12 +5,13 @@
     .module('app.core', [
             'ionic',
             'firebase',
+            'ngMessages',
     ]);
 
     angular
     	.module('app.core')
-    	.run(['$ionicPlatform',
-    	     function($ionicPlatform) {
+    	.run(['$ionicPlatform', '$rootScope', '$state',
+    	     function($ionicPlatform, $rootScope, $state) {
     	     	$ionicPlatform.ready(function() {
 					    if(window.cordova && window.cordova.plugins.Keyboard) {
 					      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -20,6 +21,15 @@
 					      StatusBar.styleDefault();
 					    }
 					  });
+
+            /*
+				    Cath the stateError for un-authenticated users
+				    */
+				    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error){
+    	     		if (error === "AUTH_REQUIRED") {
+    	     			$state.go('login');
+    	     		};
+    	     	});
 			}])
 			.constant('FBURL', 'https://ionic-firebase-start.firebaseio.com/')
 })();

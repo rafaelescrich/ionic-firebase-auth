@@ -69,10 +69,15 @@
 					"email": email,
 					"password": password
 				}).then (function(authData){
-					$state.go('dashboard');
+					$state.go('profile');
 				}).catch(function(error){
 					console.log(error);
 				});
+			},
+
+			logoutUser: function(){
+				authUser.$unauth();
+				$state.go('login');
 			},
 
       /**
@@ -90,6 +95,37 @@
 				}).catch(function(error){
 					console.log(error);
 				});
+			},
+
+			changePassword: function(email, oldPassword, newPassword){
+				authUser.$changePassword({
+					email: email,
+					oldPassword: oldPassword,
+					newPassword: newPassword
+				}).then(function(){
+					alert('Password Changed!');
+					$state.go('profile');
+				}).catch(function(error){
+					console.log(error);
+				});
+			},
+
+			changeEmail: function(oldEmail, newEmail, password){
+				authUser.$changeEmail({
+					oldEmail: oldEmail,
+					newEmail: newEmail,
+					password: password
+				}).then(function(){
+						alert('Cambiaste tu correo!');
+						$state.go('profile');
+				}).catch(function(error){
+					console.log(error);
+				});
+			},
+
+			userProfileData: function(userId){
+				var userProfileRef = rootRef.child('userProfile').child(userId);
+				return $firebaseObject(userProfileRef);
 			}
 
 		}
