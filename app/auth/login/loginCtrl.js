@@ -7,9 +7,9 @@
   /**
    * We create our controller and inject the AuthService so we can connect to Firebase.
    */
-	LoginCtrl.$inject = ['$scope', 'AuthService'];
+	LoginCtrl.$inject = ['$scope', '$state', 'AuthService'];
 
-  function LoginCtrl($scope, AuthService){
+  function LoginCtrl($scope, $state, AuthService){
     // We create a variable called 'data', we asign it to an empty object and bind it to scope, to handle the form data.
 		$scope.data = {};
 
@@ -23,7 +23,7 @@
 				var email = $scope.data.email;
 				var password = $scope.data.password;
 				AuthService.loginUser(email, password);
-			};				
+			};
 		}
 	}
 })();
