@@ -15,9 +15,11 @@
     /**
      * We grab our user's email from the form and send it to our service, piece of cake!
      */
-		$scope.resetPassword = function(){
+		$scope.resetPassword = function(passwordResetForm){
+			if (passwordResetForm.$valid) {
 				var email = $scope.data.email;
 				AuthService.resetPassword(email);
+			};				
 		};
 	}
 })();

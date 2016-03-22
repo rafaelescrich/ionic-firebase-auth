@@ -41,10 +41,11 @@
 					password: newPassword,
 					fullName: newFullName,
 				}).then(function(authData){
-						ref.child("userProfile").child(authData.uid).set({
+						rootRef.child("userProfile").child(authData.uid).set({
 							name: newFullName,
 							email: newEmail,
 						});
+						$state.go('profile');
 				}).catch(function(error){
 						switch (error.code) {
 				      case "EMAIL_TAKEN":

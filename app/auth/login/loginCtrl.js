@@ -18,10 +18,12 @@
      * The auth service will take care of everything else for you!
      * @return {[type]} [description]
      */
-		$scope.loginEmail = function(){
+		$scope.loginEmail = function(loginForm){
+			if (loginForm.$valid) {
 				var email = $scope.data.email;
 				var password = $scope.data.password;
 				AuthService.loginUser(email, password);
+			};				
 		}
 	}
 })();
