@@ -11,5 +11,9 @@ This will give you a complete auth module built to work with Firebase
 
 It gives you everything modularized following John Papa's angular code style
 
-**TODO**
-Add form validation with ngMessages
+**DONE**
+
+* Added ngMessages for Form Validation
+* Added a User Profile Page
+* Added the ability for users to change their emails/passwords
+* Added a logout button
