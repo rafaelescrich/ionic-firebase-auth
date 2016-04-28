@@ -37,7 +37,7 @@
               "email": newEmail,
               "password": newPassword
             }).then (function(authData){
-                rootRef.child("userProfile").child(authData.uid).set({
+                $firebaseRef.default.child("userProfile").child(authData.uid).set({
                 name: newFullName,
                 email: newEmail,
               });
