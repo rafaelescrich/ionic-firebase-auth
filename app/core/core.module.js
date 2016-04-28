@@ -31,5 +31,8 @@
     	     		};
     	     	});
 			}])
-			.constant('FBURL', 'https://<<Your Firebase URL>>.firebaseio.com/')
+      .config(function($firebaseRefProvider) {
+        $firebaseRefProvider.registerUrl('https://ionic-firebase-start.firebaseio.com/');
+      });
+
 })();

@@ -4,21 +4,13 @@
 	angular
 			.module('app.auth')
       /**
-       * [This is a simple service, it take in the Firebase Url constant, pass it to the
-       * Firebase constructor function]
-       *
-       * This is basically the same as saying rootRef = new Firebase(FBURL);
-       */
-      .service('rootRef', ['FBURL', Firebase])
-
-      /**
        * AuthService is going to handle all of our auth functions, so we don't need to write them inside the controllers.
        */
 			.factory('AuthService', AuthService);
 
-	function AuthService($firebaseAuth, $firebaseObject, $firebaseArray, $state, rootRef){
+	function AuthService($firebaseAuth, $firebaseObject, $firebaseArray, $state, $firebaseRef){
 
-    var authUser = $firebaseAuth(rootRef); // We are using angular-fire $firebaseAuth to return an auth object.
+    var authUser = $firebaseAuth($firebaseRef.default);
 
 		return {
 			/*
@@ -41,11 +33,16 @@
 					password: newPassword,
 					fullName: newFullName,
 				}).then(function(authData){
-						rootRef.child("userProfile").child(authData.uid).set({
-							name: newFullName,
-							email: newEmail,
-						});
-						$state.go('profile');
+            authUser.$authWithPassword({
+              "email": newEmail,
+              "password": newPassword
+            }).then (function(authData){
+                rootRef.child("userProfile").child(authData.uid).set({
+                name: newFullName,
+                email: newEmail,
+              });
+              $state.go('profile');
+            });						
 				}).catch(function(error){
 						switch (error.code) {
 				      case "EMAIL_TAKEN":
@@ -97,6 +94,11 @@
 				});
 			},
 
+			/**
+			 * This is going to take the user's email + oldPassword + newPassword and change the Password
+			 * used for login.
+			 * After changing the password it's going to redirect the user to the profile page.
+			 */
 			changePassword: function(email, oldPassword, newPassword){
 				authUser.$changePassword({
 					email: email,
@@ -110,6 +112,13 @@
 				});
 			},
 
+			/**
+			 * This is going to take the user's oldEmail + newEmail + password and change the email
+			 * used for login.
+			 *
+			 * Remember, afeter changing the login email we also need to update the userProfile.userId node
+			 * I'm going to handle this in the controller using the userProfileData function below.
+			 */
 			changeEmail: function(oldEmail, newEmail, password){
 				authUser.$changeEmail({
 					oldEmail: oldEmail,
@@ -122,9 +131,11 @@
 					console.log(error);
 				});
 			},
-
+			/**
+			 * This will return the userProfile.userId node so we can update the email.
+			 */
 			userProfileData: function(userId){
-				var userProfileRef = rootRef.child('userProfile').child(userId);
+				var userProfileRef = $firebaseRef.default.child('userProfile').child(userId);
 				return $firebaseObject(userProfileRef);
 			}
 
