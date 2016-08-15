@@ -14,8 +14,7 @@
 				var newEmail = $scope.data.email;
 				var newPassword = $scope.data.password;
 				var newFullName = $scope.data.fullName;
-				var selectedPlan = $state.params.pId;
-				AuthService.signupEmail(newEmail, newPassword, newFullName, selectedPlan);
+				AuthService.signupEmail(newEmail, newPassword, newFullName);
 			};
 
 		};
